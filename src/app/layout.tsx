@@ -20,15 +20,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn("font-montserrat bg-darkBg", montserrat.variable)}>
-        <div className="w-full min-h-screen flex flex-col justify-center place-items-center">
-          <div className="hidden w-full min-h-screen md:flex justify-center place-items-center">
-            <h1>Download The App</h1>
-          </div>
-          <div className="md:hidden w-full min-h-screen flex justify-center place-items-center">
-            {children}
-          </div>
-        </div>
+      <body className={cn("font-montserrat bg-darkBg ", montserrat.variable)}>
+        {children}
       </body>
     </html>
   );
