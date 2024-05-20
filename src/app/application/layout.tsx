@@ -23,12 +23,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const { getItem } = useLocalStorage("value");
-  // const currentUser = getItem();
-  // if (!currentUser) {
-  //   redirect("/auth");
-  // }
-
   return (
     <html lang="en">
       <body className={cn("font-montserrat bg-darkBg", montserrat.variable)}>
@@ -40,9 +34,9 @@ export default async function RootLayout({
             {children}
             <Navbar />
           </div>
+          <Sonner />
+          <Toaster />
         </div>
-        <Sonner />
-        <Toaster />
       </body>
     </html>
   );

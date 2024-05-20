@@ -52,7 +52,8 @@ export default function Login() {
   const router = useRouter();
   const [authSwitch, setAuthSwitch] = useState(true);
   const [isPending, startTransition] = useTransition();
-  const { signInWithEmailAndPassword } = useMobileUsers();
+  const { signInWithEmailAndPassword, signUpWithEmailAndPassword } =
+    useMobileUsers();
   const form1 = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
   });
@@ -111,26 +112,34 @@ export default function Login() {
   }
   async function onSignUpSubmit(data: z.infer<typeof signUpScheema>) {
     startTransition(async () => {
-      // const result = await signInWithEmailAndPassword(data);
+      if (data.password !== data.repeat_password) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Passwords do not match",
+        });
+        return;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-      // const { error } = JSON.parse(result);
-      // if (error?.message) {
-      //   console.log(error);
-      //   toast({
-      //     variant: "destructive",
-      //     title: "Error",
-      //     description: error.message,
-      //   });
-      //   return;
-      // }
+      const result = await signUpWithEmailAndPassword(data);
+
+      const { error } = result;
+      if (error?.message) {
+        console.log(error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Email already exists",
+        });
+        return;
+      }
 
       toast({
-        description: `Mu Signup ka ${data.email}?`,
+        description: `Signup Successful!`,
       });
 
-      // return redirect("/application");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      console.log(data);
+      return setAuthSwitch(!authSwitch);
     });
   }
   return (

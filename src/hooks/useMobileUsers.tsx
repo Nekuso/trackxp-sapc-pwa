@@ -55,6 +55,21 @@ export const useMobileUsers: any = () => {
     return result;
   };
 
+  const signUpWithEmailAndPassword = async (props: any, duration?: number) => {
+    const result = await supabase
+      .from("mobile_users")
+      .insert({
+        first_name: props.first_name,
+        last_name: props.last_name,
+        email: props.email,
+        password: props.password,
+      })
+      .select();
+    if (result.error) return result;
+    await new Promise((resolve) => setTimeout(resolve, duration));
+    return result;
+  };
+
   const getMobileUser = async (props: any, duration?: number) => {
     const { data, error } = await supabase
       .from("mobile_users")
@@ -90,5 +105,6 @@ export const useMobileUsers: any = () => {
     getMobileUser,
     getMobileUsers,
     signInWithEmailAndPassword,
+    signUpWithEmailAndPassword,
   };
 };
