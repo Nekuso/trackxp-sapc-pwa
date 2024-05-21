@@ -65,10 +65,10 @@ export default function Application() {
             getOrderServicesLatest(currentUser, 0);
             toast({
               className: cn(
-                "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-full py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+                "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
               ),
               title: "📣 Notification",
-              description: `Order has been updated!`,
+              description: `An order has been updated!`,
             });
           }
         )

@@ -21,6 +21,8 @@ import { z } from "zod";
 import { useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useOrderServices } from "@/hooks/useOrderService";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -33,6 +35,10 @@ const redeemSchema = z.object({
 
 export default function Redeem() {
   const [isPending, startTransition] = useTransition();
+  const { getItem } = useLocalStorage("value");
+  const currentUser = getItem();
+
+  const { redeemOrderService } = useOrderServices();
 
   const form = useForm<z.infer<typeof redeemSchema>>({
     resolver: zodResolver(redeemSchema),
@@ -40,29 +46,33 @@ export default function Redeem() {
 
   async function onSubmit(data: z.infer<typeof redeemSchema>) {
     startTransition(async () => {
-      // const result = await signInWithEmailAndPassword(data);
-      // console.log(result);
-      // const { error } = result;
-      // if (error?.message) {
-      //   console.log(error);
-      //   toast({
-      //     variant: "destructive",
-      //     title: "Error",
-      //     description: error.message,
-      //   });
-      //   return;
-      // }
+      const result = await redeemOrderService({ ...data, user: currentUser });
+      const { error } = result;
+      if (error?.message) {
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: error.message,
+        });
+        return;
+      }
 
-      //   toast({
-      //     description: `Login Successful!`,
-      //   });
-      console.log(data);
       await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      toast({
+        className: cn(
+          "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+        ),
+        title: "🎉 Redeemed",
+        description: `Your order has been redeemed successfully!`,
+      });
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      redirect(`/application/orders/${result.data[0].id}`);
     });
   }
 
   return (
-    <div className="flex flex-col gap-4 min-h-screen w-full place-items-center justify-center p-4 relative">
+    <div className="flex flex-col gap-4 min-h-[70vh] w-full place-items-center justify-center p-4 relative">
       <div className="w-full h-fit flex flex-col gap-6 justify-between bg-darkComponentBg rounded-2xl p-8 shadow-lg">
         <div className="w-full flex flex-col">
           <h1 className="text-start text-2xl text-white font-bold">

@@ -274,6 +274,38 @@ export const useOrderServices: any = () => {
     return result;
   };
 
+  const redeemOrderService = async (props: any, duration?: number) => {
+    const result = await supabase
+      .from("order_services")
+      .select("id,redeem_code,redeemed")
+      .eq("redeem_code", props.redeem_code);
+
+    if (result?.data?.length === 0) {
+      console.log("Invalid redeem code.");
+      return { error: { message: "Invalid redeem code." } };
+    }
+
+    if (result?.data && result.data[0]?.redeemed === true) {
+      return { error: { message: "Already redeemed." } };
+    }
+
+    const updateResult = await supabase
+      .from("order_services")
+      .update({
+        customer_email: props.user.email,
+        customer_first_name: props.user.first_name,
+        customer_last_name: props.user.last_name,
+        customer_contact_number: props.user.contact_number,
+        mobile_user_id: props.user.id,
+        redeemed: true,
+      })
+      .eq("redeem_code", props.redeem_code);
+
+    await new Promise((resolve) => setTimeout(resolve, duration));
+
+    return result;
+  };
+
   return {
     // states
     orderServicesData,
@@ -285,6 +317,8 @@ export const useOrderServices: any = () => {
     getOrderServices,
     getOrderServiceTracking,
     getOrderServicesLatest,
+
+    redeemOrderService,
 
     updateOrderServiceRating,
   };

@@ -9,11 +9,11 @@ import mediumVehicle from "@/images/vehicle-medium-hd.png";
 import largeVehicle from "@/images/vehicle-large-hd.png";
 import CountUp from "react-countup";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/router";
 import { allPurchaseOrderServicesDisplay } from "@/types";
 import { FaAngleRight } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import Celebrate from "@/images/celebrate.png";
+import { useRouter } from "next/navigation";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -23,6 +23,7 @@ export default function DashboardContent({
   currentUser,
   latestOrderServiceData,
 }: any) {
+  const router = useRouter();
   const data: allPurchaseOrderServicesDisplay = latestOrderServiceData[0];
 
   return (
@@ -35,7 +36,10 @@ export default function DashboardContent({
       </div>
       <div className="w-full h-fit flex flex-col gap-4">
         {latestOrderServiceData.length > 0 && (
-          <div className="w-full h-[150px] bg-applicationPrimary rounded-2xl p-4 shadow-lg">
+          <div
+            className="w-full h-[150px] bg-applicationPrimary rounded-2xl p-4 shadow-lg active:scale-90 transition-all duration-300"
+            onClick={() => router.push(`/application/orders/${data?.id}`)}
+          >
             <div className="w-full flex justify-between place-items-center">
               <h1 className="text-white text-xs font-semibold ">
                 Latest Order
@@ -53,7 +57,8 @@ export default function DashboardContent({
               <div className="h-full flex flex-col justify-center">
                 <h2
                   className={cn(
-                    "w-full text-center text-4xl font-extrabold text-white"
+                    "w-full text-center text-3xl font-extrabold text-white",
+                    data?.progress_entries.length > 4 ? "text-green-300" : ""
                   )}
                 >
                   <CountUp
@@ -81,7 +86,7 @@ export default function DashboardContent({
                     : largeVehicle
                 }
                 alt="Vehicle"
-                className="rounded-xl w-[70%] "
+                className="rounded-xl w-[70%] pointer-events-none"
               />
             </div>
           </div>
@@ -89,7 +94,7 @@ export default function DashboardContent({
         <div className="w-full flex gap-4 justify-between">
           <div className="w-full h-[130px] flex flex-col justify-between bg-darkComponentBg rounded-2xl p-4 shadow-lg">
             <h1 className="text-white font-semibold text-sm">
-              Accumolated Points
+              Collected Points
             </h1>
             <h1 className="w-full h-full flex justify-center place-items-center font-bold text-center text-white text-4xl">
               {currentUser?.points?.toFixed(2)}
@@ -111,7 +116,11 @@ export default function DashboardContent({
         <div className="w-full min-h-[240px] flex flex-col justify-between bg-darkComponentBg rounded-2xl gap-2 p-4 shadow-lg active:scale-95 transition-all duration-300">
           <h1 className="text-white font-semibold text-lg">📣 What's New?</h1>
           <div className="w-full h-full flex justify-between place-items-start gap-2">
-            <Image src={Celebrate} alt="Celebrate" className="w-[38%]" />
+            <Image
+              src={Celebrate}
+              alt="Celebrate"
+              className="w-[38%] pointer-events-none"
+            />
             <div className="w-full h-full flex flex-col justify-between place-items-center">
               <div className="w-full h-full flex flex-col gap-1">
                 <h1 className="text-white font-semibold text-sm">

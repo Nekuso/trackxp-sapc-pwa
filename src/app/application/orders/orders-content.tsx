@@ -19,7 +19,7 @@ export default function OrdersContent({ orderServicesData }: any) {
   const router = useRouter();
 
   return (
-    <div className="w-full minh-[1300px] flex flex-col gap-6 justify-between rounded-2xl">
+    <div className="w-full min-h-[900px] flex flex-col gap-6 justify-between rounded-2xl pb-14">
       {orderServicesData.map((order: any) => {
         return (
           <div
