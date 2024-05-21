@@ -6,11 +6,12 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { HiOutlineSpeakerphone } from "react-icons/hi";
 import { FaUserLarge } from "react-icons/fa6";
 import { RiCouponFill } from "react-icons/ri";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { pathNameFilter } from "@/hooks/pathNameFilter";
 import Link from "next/link";
 
 export default function page() {
+  const router = useRouter();
   const navItems = [
     {
       id: 1,
@@ -47,15 +48,15 @@ export default function page() {
   const pathname = usePathname();
 
   return (
-    <div className="w-full h-[100px] flex justify-center place-items-center fixed bottom-0 p-5 bg-darkComponentBg border border-lightBorder rounded-t-[2.5rem]">
+    <div className="w-full h-[100px] flex justify-center place-items-center fixed bottom-0 p-5 bg-darkComponentBg border border-lightBorder rounded-t-[2.5rem] shadow-t-xl">
       <div className="w-full h-full flex px-2 justify-between place-items-center">
         {navItems.map((item) => {
           const { link } = item;
           return (
-            <Link
-              href={link}
+            <span
               key={item.id}
-              className={`flex flex-col justify-center place-items-center hover:bg-applicationPrimary primary-glow transition-all duration-300 w-14 h-14 rounded-2xl hover:scale-110 bg-${
+              onClick={() => router.push(link)}
+              className={`flex flex-col justify-center place-items-center hover:bg-applicationPrimary primary-glow transition-all duration-300 w-14 h-14 rounded-2xl hover:scale-110 cursor-pointer active:scale-95 bg-${
                 link.toLowerCase() === pathname
                   ? "applicationPrimary scale-110"
                   : link
@@ -66,7 +67,7 @@ export default function page() {
               }`}
             >
               {item.icon}
-            </Link>
+            </span>
           );
         })}
       </div>

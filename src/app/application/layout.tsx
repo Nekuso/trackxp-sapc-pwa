@@ -30,7 +30,7 @@ export default async function RootLayout({
           <div className="hidden w-full min-h-screen md:flex justify-center place-items-center">
             <h1 className="text-white">Download The App</h1>
           </div>
-          <div className="md:hidden w-full min-h-screen flex flex-col justify-center place-items-center relative">
+          <div className="md:hidden w-full min-h-screen flex flex-col justify-center place-items-center relative pb-24">
             {children}
             <Navbar />
           </div>
