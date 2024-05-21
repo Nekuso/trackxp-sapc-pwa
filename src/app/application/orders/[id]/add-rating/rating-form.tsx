@@ -21,11 +21,17 @@ import { useOrderServices } from "@/hooks/useOrderService";
 import { Rating as ReactRating, Star } from "@smastrom/react-rating";
 import { useToast } from "@/components/ui/use-toast";
 import "@smastrom/react-rating/style.css";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
+import useSound from "use-sound";
 
 export default function RatingForm({ data, setDialogIsOpen }: any) {
   const { toast } = useToast();
   const { updateOrderServiceRating } = useOrderServices();
   const [isPending, startTransition] = useTransition();
+  const [notificationCounter, setNotificationCounter] = useState(0);
+  const [play] = useSound("/sounds/notification.mp3", { volume: 1 });
+  const { getItem } = useLocalStorage("value");
+  const currentUser = getItem();
 
   const updateRatingForm = z.object({
     id: z.string().nullable(),
@@ -46,18 +52,28 @@ export default function RatingForm({ data, setDialogIsOpen }: any) {
 
   async function onSubmit(data: any) {
     startTransition(async () => {
-      await updateOrderServiceRating(data);
+      await updateOrderServiceRating({ ...data, user: currentUser });
       await new Promise((resolve) => setTimeout(resolve, 500));
       setDialogIsOpen(false);
-      toast({
-        className: cn(
-          "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
-        ),
-        title: "📣 Notification",
-        description: `Rating has been recorded. Thank you!`,
-      });
+      setNotificationCounter((prev) => prev + 1);
+
+      setTimeout(() => {
+        toast({
+          className: cn(
+            "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+          ),
+          title: "📣 Notification",
+          description: `Rating has been recorded. Thank you!`,
+        });
+      }, 500);
     });
   }
+
+  useEffect(() => {
+    if (notificationCounter > 0) {
+      play();
+    }
+  }, [notificationCounter]);
 
   return (
     <Form {...form}>

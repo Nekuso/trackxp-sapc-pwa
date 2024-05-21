@@ -38,7 +38,6 @@ import { initiateColumns as initiatePartsOrdersColumns } from "./order-service-t
 import { initiateColumns as initiateServiceOrdersColumns } from "./order-service-tables/service-orders/columns";
 import "@smastrom/react-rating/style.css";
 import { Rating as ReactRating, Star } from "@smastrom/react-rating";
-
 import Rating from "./add-rating/rating-dialog";
 
 export const viewport: Viewport = {
@@ -46,8 +45,6 @@ export const viewport: Viewport = {
 };
 
 export default function OrdersContent({ currentOrderServiceData }: any) {
-  console.log(currentOrderServiceData);
-
   const [progress_entries_data, setProgressEntriesData] = useState<any>(
     currentOrderServiceData[0].progress_entries
       .map((progress: any) => ({
@@ -74,7 +71,6 @@ export default function OrdersContent({ currentOrderServiceData }: any) {
       )
       .reverse()
   );
-
   useEffect(() => {
     setProgressEntriesData(
       currentOrderServiceData[0].progress_entries

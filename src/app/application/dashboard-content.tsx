@@ -27,7 +27,7 @@ export default function DashboardContent({
   const data: allPurchaseOrderServicesDisplay = latestOrderServiceData[0];
 
   return (
-    <div className="flex flex-col gap-8 min-h-screen w-full place-items-center justify-start p-6 relative">
+    <div className="flex flex-col gap-8 w-full place-items-center justify-start p-6 relative">
       <div className="w-full h-fit flex flex-col">
         <h1 className="text-lg text-white">Welcome Back,</h1>
         <h1 className="text-2xl text-white font-bold">
@@ -96,8 +96,8 @@ export default function DashboardContent({
             <h1 className="text-white font-semibold text-sm">
               Collected Points
             </h1>
-            <h1 className="w-full h-full flex justify-center place-items-center font-bold text-center text-white text-4xl">
-              {currentUser?.points?.toFixed(2)}
+            <h1 className="w-full h-full flex justify-center place-items-center font-bold text-center text-white text-3xl">
+              {currentUser?.points}
             </h1>
           </div>
           <div className="w-[60%] h-[130px] flex flex-col justify-between bg-white rounded-2xl p-4 shadow-lg">

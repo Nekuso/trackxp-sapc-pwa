@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 import Searching from "@/images/loading-search.gif";
 import { FaAngleLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import useSound from "use-sound";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -24,12 +25,14 @@ export const viewport: Viewport = {
 export default function Order({ params }: { params: any }) {
   const { getItem } = useLocalStorage("value");
   const router = useRouter();
-  const currenUser = getItem();
-
+  const currentUser = getItem();
+  const [notificationCounter, setNotificationCounter] = useState(0);
   const [error, setError] = useState(false);
 
   const { getOrderServiceTracking, currentOrderServiceData } =
     useOrderServices();
+
+  const [play] = useSound("/sounds/notification.mp3", { volume: 1 });
 
   useEffect(() => {
     const initialFetch = async () => {
@@ -37,10 +40,16 @@ export default function Order({ params }: { params: any }) {
       if (result) setError(result);
     };
     initialFetch();
-    if (!currenUser) {
+    if (!currentUser) {
       redirect("/auth");
     }
   }, []);
+
+  useEffect(() => {
+    if (notificationCounter > 0) {
+      play();
+    }
+  }, [notificationCounter]);
 
   useEffect(() => {
     if (!error) {
@@ -69,13 +78,16 @@ export default function Order({ params }: { params: any }) {
           },
           (payload: any) => {
             getOrderServiceTracking(params, 0);
-            toast({
-              className: cn(
-                "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
-              ),
-              title: "📣 Notification",
-              description: `An order has been updated!`,
-            });
+            setNotificationCounter((prev) => prev + 1);
+            setTimeout(() => {
+              toast({
+                className: cn(
+                  "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+                ),
+                title: "📣 Notification",
+                description: `An order has been updated!`,
+              });
+            }, 500);
           }
         )
         .subscribe();

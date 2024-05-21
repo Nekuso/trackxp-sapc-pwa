@@ -12,6 +12,7 @@ import { useOrderServices } from "@/hooks/useOrderService";
 import { toast } from "@/components/ui/use-toast";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import useSound from "use-sound";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -21,20 +22,25 @@ export default function Application() {
   const { getItem } = useLocalStorage("value");
   const currentUser = getItem();
 
-  const [error, setError] = useState(false);
-
+  const [notificationCounter, setNotificationCounter] = useState(0);
+  const [play] = useSound("/sounds/notification.mp3", { volume: 1 });
   const { getOrderServicesLatest, latestOrderServiceData } = useOrderServices();
 
   useEffect(() => {
     const initialFetch = async () => {
       const result = getOrderServicesLatest(currentUser);
-      if (result) setError(result);
     };
     initialFetch();
     if (!currentUser) {
       redirect("/auth");
     }
   }, []);
+
+  useEffect(() => {
+    if (notificationCounter > 0) {
+      play();
+    }
+  }, [notificationCounter]);
 
   useEffect(() => {
     if (latestOrderServiceData.length > 0) {
@@ -63,13 +69,17 @@ export default function Application() {
           },
           (payload: any) => {
             getOrderServicesLatest(currentUser, 0);
-            toast({
-              className: cn(
-                "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
-              ),
-              title: "📣 Notification",
-              description: `An order has been updated!`,
-            });
+            setNotificationCounter((prev) => prev + 1);
+
+            setTimeout(() => {
+              toast({
+                className: cn(
+                  "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+                ),
+                title: "📣 Notification",
+                description: `Latest order has been updated!`,
+              });
+            }, 500);
           }
         )
         .subscribe();
@@ -80,7 +90,7 @@ export default function Application() {
   }, [latestOrderServiceData]);
 
   return (
-    <div className="flex flex-col gap-4 min-h-screen w-full place-items-center justify-start">
+    <div className="flex flex-col gap-4 w-full place-items-center justify-start">
       <DashboardContent
         currentUser={currentUser}
         latestOrderServiceData={latestOrderServiceData}

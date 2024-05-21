@@ -70,10 +70,8 @@ export default function Login() {
   async function onLoginSubmit(data: z.infer<typeof loginSchema>) {
     startTransition(async () => {
       const result = await signInWithEmailAndPassword(data);
-      console.log(result);
       const { error } = result;
       if (error?.message) {
-        console.log(error);
         toast({
           variant: "destructive",
           title: "Error",
@@ -130,7 +128,6 @@ export default function Login() {
 
       const { error } = result;
       if (error?.message) {
-        console.log(error);
         toast({
           variant: "destructive",
           title: "Error",

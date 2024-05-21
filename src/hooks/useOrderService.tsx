@@ -1,5 +1,6 @@
 import createSupabaseBrowserClient from "@/lib/supabase/client";
 import { useState } from "react";
+import { useLocalStorage } from "./useLocalStorage";
 
 export const useOrderServices: any = () => {
   const supabase = createSupabaseBrowserClient();
@@ -262,6 +263,7 @@ export const useOrderServices: any = () => {
   };
 
   const updateOrderServiceRating = async (props: any, duration?: number) => {
+    const { setItem } = useLocalStorage("value");
     const result = await supabase
       .from("order_services")
       .update({
@@ -269,6 +271,32 @@ export const useOrderServices: any = () => {
       })
       .eq("id", props.id);
 
+    const pointsResult = await supabase.rpc("increment_user_points", {
+      user_id: props.user.id,
+    });
+
+    const userResult = await supabase
+      .from("mobile_users")
+      .select(
+        `
+        id,
+        first_name,
+        last_name,
+        email,
+        password,
+        image_url,
+        dob,
+        gender,
+        address,
+        contact_number,
+        points,      
+        created_at
+      `
+      )
+      .eq("email", props.user.email)
+      .select();
+
+    setItem(userResult?.data?.[0]);
     await new Promise((resolve) => setTimeout(resolve, duration));
 
     return result;
@@ -281,7 +309,6 @@ export const useOrderServices: any = () => {
       .eq("redeem_code", props.redeem_code);
 
     if (result?.data?.length === 0) {
-      console.log("Invalid redeem code.");
       return { error: { message: "Invalid redeem code." } };
     }
 

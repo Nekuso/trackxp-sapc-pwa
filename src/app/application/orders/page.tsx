@@ -22,9 +22,7 @@ export default function Orders() {
   const currentUser = getItem();
 
   const [error, setError] = useState(false);
-
   const { getOrderServices, orderServicesData } = useOrderServices();
-
   useEffect(() => {
     const initialFetch = async () => {
       const result = getOrderServices(currentUser);
@@ -61,7 +59,7 @@ export default function Orders() {
   }, [orderServicesData]);
 
   return (
-    <div className="flex flex-col gap-4 min-h-screen w-full place-items-center justify-start px-4 relative">
+    <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
       <div className="w-full h-fit flex flex-col justify-between px-4 relative">
         <div className="w-full flex flex-col py-6 sticky top-0 bg-darkBg z-[50]">
           <h1 className="text-start text-2xl text-white font-bold">

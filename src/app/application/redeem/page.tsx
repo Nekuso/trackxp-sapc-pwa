@@ -12,17 +12,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useOrderServices } from "@/hooks/useOrderService";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import useSound from "use-sound";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -37,8 +38,15 @@ export default function Redeem() {
   const [isPending, startTransition] = useTransition();
   const { getItem } = useLocalStorage("value");
   const currentUser = getItem();
-
   const { redeemOrderService } = useOrderServices();
+  const [notificationCounter, setNotificationCounter] = useState(0);
+  const [play] = useSound("/sounds/notification.mp3", { volume: 1 });
+
+  useEffect(() => {
+    if (notificationCounter > 0) {
+      play();
+    }
+  }, [notificationCounter]);
 
   const form = useForm<z.infer<typeof redeemSchema>>({
     resolver: zodResolver(redeemSchema),
@@ -58,14 +66,17 @@ export default function Redeem() {
       }
 
       await new Promise((resolve) => setTimeout(resolve, 2000));
+      setNotificationCounter((prev: any) => prev + 1);
+      setTimeout(() => {
+        toast({
+          className: cn(
+            "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+          ),
+          title: "🎉 Redeemed",
+          description: `Your order has been redeemed successfully!`,
+        });
+      }, 500);
 
-      toast({
-        className: cn(
-          "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
-        ),
-        title: "🎉 Redeemed",
-        description: `Your order has been redeemed successfully!`,
-      });
       await new Promise((resolve) => setTimeout(resolve, 500));
       redirect(`/application/orders/${result.data[0].id}`);
     });
