@@ -29,7 +29,7 @@ export default function Home() {
       </div>
       <div className="md:hidden flex flex-col gap-8 h-screen max-h-screen w-full place-items-center justify-center py-8 px-5 bg-darkBg">
         <div className="w-full h-full flex flex-col gap-6 justify-center place-items-center">
-          <Image src={Onboarding} alt="Onboarding" className="w-full" />
+          <Image src={Onboarding} alt="Onboarding" className="w-full pointer-events-none" />
           <div className="w-full flex flex-col gap-3">
             <h1 className="text-white w-full text-center text-2xl font-bold leading-10">
               Let's{" "}

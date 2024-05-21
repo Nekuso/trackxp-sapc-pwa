@@ -9,19 +9,23 @@ import { cn } from "@/lib/utils";
 import smallVehicle from "@/images/vehicle-small-hd.png";
 import mediumVehicle from "@/images/vehicle-medium-hd.png";
 import largeVehicle from "@/images/vehicle-large-hd.png";
+import { useRouter } from "next/navigation";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
 };
 
 export default function OrdersContent({ orderServicesData }: any) {
-  console.log(orderServicesData);
+  const router = useRouter();
 
   return (
     <div className="w-full minh-[1300px] flex flex-col gap-6 justify-between rounded-2xl">
       {orderServicesData.map((order: any) => {
         return (
-          <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300">
+          <div
+            className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300"
+            onClick={() => router.push(`/application/orders/${order.id}`)}
+          >
             <div className="w-full flex flex-col">
               <div className="w-full flex justify-between place-items-center">
                 <h1 className="text-white text-xs">
@@ -33,12 +37,12 @@ export default function OrdersContent({ orderServicesData }: any) {
                     }
                   </span>
                 </h1>
-                <h1 className="text-white text-xs bg-applicationPrimary px-2 py-1 rounded-full">
+                <h1 className="text-white text-xs bg-applicationPrimary px-4 py-1 rounded-full">
                   {order.status}
                 </h1>
               </div>
               <div className="w-full flex justify-between place-items-center">
-                <h3 className="w-full text-md font-bold text-slate-200 ">
+                <h3 className="w-full text-sm font-bold text-slate-200 ">
                   Tracking ID: {order.tracking_id}
                 </h3>
               </div>

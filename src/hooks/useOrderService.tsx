@@ -176,8 +176,9 @@ export const useOrderServices: any = () => {
     setOrderServicesData(data);
     return error;
   };
-  const getOrderServiceTracking = async (id: string, duration?: number) => {
-    const { data, error } = await supabase
+
+  const getOrderServiceTracking = async (props: any, duration?: number) => {
+    const result = await supabase
       .from("order_services")
       .select(
         `
@@ -186,8 +187,6 @@ export const useOrderServices: any = () => {
         customer_last_name,
         customer_contact_number,
         customer_email,
-        redeemed,
-        redeem_code,
         remarks,
         employee:employees!public_order_services_employee_id_fkey(
           id,
@@ -223,7 +222,7 @@ export const useOrderServices: any = () => {
         ),
         purchase_services("*"
         ),
-        mobile_user:mobile_users("*"),
+        mobile_users("*"),
         mechanic_entries("*",
           mechanic:employees!mechanic_entries_employee_id_fkey(
             id,
@@ -248,16 +247,20 @@ export const useOrderServices: any = () => {
         rating,
         payment_method,
         created_at
-        `
+    `
       )
-      .eq("tracking_id", id)
-      .order("created_at", { ascending: false });
+      .eq("id", props.id)
+      .order("created_at", { ascending: false })
+      .limit(1);
 
-    await new Promise((resolve) => setTimeout(resolve, duration));
-    if (data?.length === 0) return true;
-    setCurrentOrderServiceDataTracking(data);
-    return error;
+    const { data, error } = result;
+    if (error) {
+      return error;
+    }
+    setCurrentOrderServiceData(data);
+    return result;
   };
+
   const updateOrderServiceRating = async (props: any, duration?: number) => {
     const result = await supabase
       .from("order_services")

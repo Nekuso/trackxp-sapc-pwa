@@ -11,6 +11,7 @@ import DashboardContent from "./dashboard-content";
 import { useOrderServices } from "@/hooks/useOrderService";
 import { toast } from "@/components/ui/use-toast";
 import createSupabaseBrowserClient from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
@@ -63,8 +64,11 @@ export default function Application() {
           (payload: any) => {
             getOrderServicesLatest(currentUser, 0);
             toast({
-              title: `Notification`,
-              description: `Order ${latestOrderServiceData[0].tracking_id} has been updated.`,
+              className: cn(
+                "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-full py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+              ),
+              title: "📣 Notification",
+              description: `Order has been updated!`,
             });
           }
         )

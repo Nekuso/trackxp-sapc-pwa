@@ -37,11 +37,15 @@ export default function DashboardContent({
         {latestOrderServiceData.length > 0 && (
           <div className="w-full h-[150px] bg-applicationPrimary rounded-2xl p-4 shadow-lg">
             <div className="w-full flex justify-between place-items-center">
-              <h1 className="text-white text-xs">Latest Order</h1>
-              <h1 className="text-white text-xs">{data?.status}</h1>
+              <h1 className="text-white text-xs font-semibold ">
+                Latest Order
+              </h1>
+              <h1 className="text-applicationPrimary text-xs px-3 py-1 bg-white rounded-full font-semibold">
+                {data?.status}
+              </h1>
             </div>
             <div className="w-full flex justify-between place-items-center">
-              <h3 className="w-full text-md font-bold text-slate-200 ">
+              <h3 className="w-full text-sm font-bold text-slate-200 ">
                 Tracking ID: {data?.tracking_id}
               </h3>
             </div>
@@ -104,12 +108,12 @@ export default function DashboardContent({
             </Link>
           </div>
         </div>
-        <div className="w-full min-h-[240px] flex flex-col justify-between bg-darkComponentBg rounded-2xl gap-2 p-4 shadow-lg">
+        <div className="w-full min-h-[240px] flex flex-col justify-between bg-darkComponentBg rounded-2xl gap-2 p-4 shadow-lg active:scale-95 transition-all duration-300">
           <h1 className="text-white font-semibold text-lg">📣 What's New?</h1>
           <div className="w-full h-full flex justify-between place-items-start gap-2">
             <Image src={Celebrate} alt="Celebrate" className="w-[38%]" />
             <div className="w-full h-full flex flex-col justify-between place-items-center">
-              <div className="w-full h-full flex flex-col gap-2">
+              <div className="w-full h-full flex flex-col gap-1">
                 <h1 className="text-white font-semibold text-sm">
                   Mobile Platforms!
                 </h1>

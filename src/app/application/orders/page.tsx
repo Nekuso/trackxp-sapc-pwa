@@ -40,7 +40,7 @@ export default function Orders() {
     if (getOrderServices.length > 0) {
       const supabase = createSupabaseBrowserClient();
       const subscribedChannel = supabase
-        .channel(`latest-service-orders-follow-up-${currentUser.id}`)
+        .channel(`service-mobile-orders-follow-up-${currentUser.id}`)
         .on(
           "postgres_changes",
           {
@@ -63,7 +63,7 @@ export default function Orders() {
   return (
     <div className="flex flex-col gap-4 min-h-screen w-full place-items-center justify-start px-4 relative">
       <div className="w-full h-fit flex flex-col justify-between px-4 relative">
-        <div className="w-full flex flex-col py-6 sticky top-0 bg-darkBg">
+        <div className="w-full flex flex-col py-6 sticky top-0 bg-darkBg z-[50]">
           <h1 className="text-start text-2xl text-white font-bold">
             Recent Orders
           </h1>

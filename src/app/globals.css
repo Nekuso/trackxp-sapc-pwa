@@ -88,3 +88,16 @@
 .primary-glow:hover {
   box-shadow: 0px 0px 27px 5px rgba(96, 94, 205, 0.74);
 }
+
+.animate-pulse-on-ping {
+  animation: pulse-animation-ping 2s infinite;
+}
+
+@keyframes pulse-animation-ping {
+  0% {
+    box-shadow: 0 0 0 0px rgb(96, 94, 205, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 0 20px rgba(96, 94, 205, 0);
+  }
+}

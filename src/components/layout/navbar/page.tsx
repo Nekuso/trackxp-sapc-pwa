@@ -48,8 +48,8 @@ export default function page() {
   const pathname = usePathname();
 
   return (
-    <div className="w-full h-[100px] flex justify-center place-items-center fixed bottom-0 p-5 bg-darkComponentBg border border-lightBorder rounded-t-[2.5rem] shadow-t-xl">
-      <div className="w-full h-full flex px-2 justify-between place-items-center">
+    <div className="w-full h-[100px] flex justify-center place-items-center fixed bottom-0 py-5 px-[1.25rem] bg-darkComponentBg border border-lightBorder rounded-t-[2.5rem] shadow-t-xl z-50">
+      <div className="w-full h-full flex px-.8 justify-between place-items-center">
         {navItems.map((item) => {
           const { link } = item;
           return (
