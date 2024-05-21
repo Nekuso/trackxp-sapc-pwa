@@ -186,7 +186,7 @@ export type allPurchaseOrdersDisplay = {
   created_at: string;
 };
 export type allPurchaseOrderServicesDisplay = {
-  points: ReactNode;
+  points: any;
   id: string | any;
   customer_first_name: string | any;
   customer_last_name: string | any;
