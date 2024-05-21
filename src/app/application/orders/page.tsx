@@ -60,7 +60,7 @@ export default function Orders() {
 
   return (
     <div className="flex flex-col gap-4 w-full place-items-center justify-start px-4 relative">
-      <div className="w-full h-fit flex flex-col justify-between px-4 relative">
+      <div className="w-full h-fit flex flex-col justify-between px-2 relative">
         <div className="w-full flex flex-col py-6 sticky top-0 bg-darkBg z-[50]">
           <h1 className="text-start text-2xl text-white font-bold">
             Recent Orders

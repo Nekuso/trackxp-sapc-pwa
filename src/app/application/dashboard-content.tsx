@@ -37,7 +37,7 @@ export default function DashboardContent({
       <div className="w-full h-fit flex flex-col gap-4">
         {latestOrderServiceData.length > 0 && (
           <div
-            className="w-full h-[150px] bg-applicationPrimary rounded-2xl p-4 shadow-lg active:scale-90 transition-all duration-300"
+            className="w-full h-fit bg-applicationPrimary rounded-2xl p-4 shadow-lg active:scale-90 transition-all duration-300"
             onClick={() => router.push(`/application/orders/${data?.id}`)}
           >
             <div className="w-full flex justify-between place-items-center">

@@ -98,7 +98,7 @@ export default function Order({ params }: { params: any }) {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 min-h-[70vh] w-full place-items-center justify-start px-8 pb-8 relative">
+    <div className="flex flex-col gap-4 min-h-[70vh] w-full place-items-center justify-start px-6 pb-8 relative">
       <div className="w-full h-fit flex flex-col justify-between sticky top-0 bg-darkBg z-50">
         <div className="w-full flex flex-col py-6 bg-darkBg">
           <h1 className="text-start text-2xl text-white font-bold flex place-items-center gap-4">
