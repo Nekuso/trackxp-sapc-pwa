@@ -46,15 +46,15 @@ export default function Profile() {
             alt="@shadcn"
           />
           <AvatarFallback className="rounded-lg">
-            {currentUser.first_name[0]} {currentUser.last_name[0]}
+            {currentUser?.first_name[0]} {currentUser?.last_name[0]}
           </AvatarFallback>
         </Avatar>
         <div className="w-full flex flex-col gap-1">
           <h1 className="text-3xl font-bold w-full text-center text-white">
-            {currentUser.first_name} {currentUser.last_name}
+            {currentUser?.first_name} {currentUser?.last_name}
           </h1>
           <h2 className="text-md font-medium w-full text-center text-slate-400">
-            {currentUser.email}
+            {currentUser?.email}
           </h2>
         </div>
       </div>
