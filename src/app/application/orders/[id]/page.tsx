@@ -85,7 +85,29 @@ export default function Order({ params }: { params: any }) {
                   "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
                 ),
                 title: "📣 Notification",
-                description: `An order has been updated!`,
+                description: `Progress has been updated!`,
+              });
+            }, 500);
+          }
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "image_entries",
+            filter: `order_service_id=eq.${params.id}`,
+          },
+          (payload: any) => {
+            getOrderServiceTracking(params, 0);
+            setNotificationCounter((prev) => prev + 1);
+            setTimeout(() => {
+              toast({
+                className: cn(
+                  "top-0 left-0 right-0 mx-auto max-w-[350px] rounded-2xl py-3 px-7 flex fixed top-3 md:top-4 bg-applicationPrimary text-white shadow-xl border-transparent font-medium"
+                ),
+                title: "📣 Notification",
+                description: `Images has been updated!`,
               });
             }, 500);
           }

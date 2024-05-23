@@ -17,7 +17,7 @@ import { MdVerified } from "react-icons/md";
 import { TbProgressBolt } from "react-icons/tb";
 import { PiGearSixBold, PiMagnifyingGlassFill } from "react-icons/pi";
 import { IoIosBarcode } from "react-icons/io";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import RemarksButton from "./remarks/remarks-dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -39,12 +39,22 @@ import { initiateColumns as initiateServiceOrdersColumns } from "./order-service
 import "@smastrom/react-rating/style.css";
 import { Rating as ReactRating, Star } from "@smastrom/react-rating";
 import Rating from "./add-rating/rating-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Autoplay from "embla-carousel-autoplay";
 
 export const viewport: Viewport = {
   themeColor: "#fff",
 };
 
 export default function OrdersContent({ currentOrderServiceData }: any) {
+  const plugin = useRef(Autoplay({ delay: 1000, stopOnInteraction: true }));
   const [progress_entries_data, setProgressEntriesData] = useState<any>(
     currentOrderServiceData[0].progress_entries
       .map((progress: any) => ({
@@ -261,6 +271,143 @@ export default function OrdersContent({ currentOrderServiceData }: any) {
       })}
       {currentOrderServiceData.map((order: any) => {
         return (
+          <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2">
+            <h3
+              className="
+            w-full flex justify-between place-items-center text-sm font-semibold text-slate-200
+            "
+            >
+              Images
+            </h3>
+            <div className="w-full h-full flex flex-col justify-center">
+              <Carousel
+                plugins={[plugin.current]}
+                className="w-full max-w-full rounded-2xl"
+                onMouseEnter={plugin.current.stop}
+                onMouseLeave={plugin.current.reset}
+                opts={{
+                  loop: true,
+                  dragFree: true,
+                }}
+              >
+                <CarouselContent className="rounded-3xl ">
+                  {order.image_entries.map((image: any, index: any) => (
+                    <CarouselItem key={index} className="basis-full">
+                      <div className="p-1">
+                        <AspectRatio
+                          ratio={1}
+                          className="rounded-md relative w-full"
+                        >
+                          <Image
+                            src={`${image.image_url}` ?? ""}
+                            alt="Photo by Drew Beamer"
+                            fill
+                            className="w-full rounded-md object-cover transition-all duration-300"
+                          />
+                        </AspectRatio>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </div>
+
+            {order.image_entries.length > 0 && (
+              <span className="text-center text-xs w-full h-full flex justify-center place-items-center text-slate-400">
+                {`Total of ${order.image_entries.length} images`}
+              </span>
+            )}
+
+            {order.image_entries.length < 1 && (
+              <span className="text-center w-full h-full flex justify-center place-items-center text-xs text-slate-400">
+                No Images
+              </span>
+            )}
+          </div>
+        );
+      })}
+      {currentOrderServiceData.map((order: any) => {
+        return (
+          <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300">
+            <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 ">
+              Head Mechanic
+            </h3>
+            <div className="w-full flex gap-3">
+              <Avatar className="w-20 h-20 cursor-pointer rounded-lg shadow-2xl primary-glow transition-all duration-300 border-2 border-applicationPrimary hover:border-applicationPrimary">
+                <AvatarImage
+                  src={order.supervisor.image_url}
+                  className=" shadow-2xl primary-glow rounded-md transition-all duration-300 border-transparent hover:border-applicationPrimary"
+                />
+                <AvatarFallback className="text-black shadow-2xl primary-glow rounded-md transition-all duration-300 border-transparent hover:border-applicationPrimary">{`${order.supervisor.first_name[0]} ${order.supervisor.last_name[0]}`}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col w-full">
+                <h3 className="text-lg font-semibold text-applicationPrimary flex place-items-center gap-1 ">
+                  <span>
+                    {order.supervisor.first_name} {order.supervisor.last_name}
+                  </span>
+                </h3>
+                <h3 className="text-sm font-semibold text-slate-400">
+                  {order.supervisor.email}
+                </h3>
+                <h3 className="text-sm font-semibold text-slate-400">
+                  {order.supervisor.contact_number}
+                </h3>
+              </div>
+            </div>
+            <h3 className="w-full flex flex-col justify-start place-items-start text-sm font-semibold text-slate-200 ">
+              Branch
+              <span className="text-sm text-slate-400">
+                {order.inventory.branches.branch_name}
+              </span>
+            </h3>
+            <div className="w-full flex flex-col place-items-center gap-1">
+              <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200 ">
+                Mechanics
+              </h3>
+              <div className="w-full flex flex-col gap-2 ">
+                {order.mechanic_entries.length > 1 ? (
+                  order.mechanic_entries.map((mechanicData: any, i: number) => (
+                    <div className="w-full flex gap-2 p-2 rounded-2xl bg-lightBorder">
+                      <Avatar
+                        className={cn(
+                          `border-2 border-darkComponentBg rounded-xl h-14 w-14`
+                        )}
+                      >
+                        <AvatarImage
+                          src={mechanicData.mechanic.image_url}
+                          className="rounded-md"
+                        />
+                        <AvatarFallback className="bg-lightComponentBg text-xs rounded-md">{`${mechanicData.mechanic.first_name[0]}${mechanicData.mechanic.last_name[0]}`}</AvatarFallback>
+                      </Avatar>
+                      <div className="w-full flex flex-col">
+                        <h3 className="text-md font-semibold text-white">
+                          {mechanicData.mechanic.first_name}{" "}
+                          {mechanicData.mechanic.last_name}
+                        </h3>
+                        <p className="text-xs text-slate-300">
+                          {mechanicData.mechanic.roles.role}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex place-items-center gap-2">
+                    <Avatar className={cn(`border-2 border-darkComponentBg`)}>
+                      <AvatarImage
+                        src={order.mechanic_entries[0].mechanic.image_url}
+                        className="rounded-md"
+                      />
+                      <AvatarFallback className="bg-lightComponentBg text-xs">{`${order.mechanic_entries[0].mechanic.first_name[0]}${order.mechanic_entries[0].mechanic.last_name[0]}`}</AvatarFallback>
+                    </Avatar>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+      {currentOrderServiceData.map((order: any) => {
+        return (
           <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2 active:scale-95 transition-all duration-300">
             <div className="w-full flex justify-between place-items-center">
               <h3 className="w-full text-sm font-semibold text-slate-200 ">
@@ -332,8 +479,12 @@ export default function OrdersContent({ currentOrderServiceData }: any) {
         return (
           <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2">
             <div className="w-full flex justify-between place-items-center">
-              <h3 className="w-full text-sm font-semibold text-slate-200 ">
+              <h3 className="text-sm font-semibold text-slate-200 ">
                 Purchase Summary
+              </h3>
+              <h3 className="text-sm font-semibold text-slate-200 ">
+                Method:{" "}
+                {order.payment_method ? order.payment_method : "Pending"}
               </h3>
             </div>
             <ScrollArea className="w-full flex flex-col h-[400px] bg-darkComponentBg rounded-xl gap-0 relative z-10">

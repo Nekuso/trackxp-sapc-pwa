@@ -8,6 +8,9 @@ const nextConfig = {
     register: true,
     skipWaiting: true,
   }),
+  images: {
+    domains: ["yqprqylnhxlropdxjoho.supabase.co"],
+  },
 };
 
 module.exports = nextConfig;

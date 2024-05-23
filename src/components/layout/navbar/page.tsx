@@ -8,6 +8,7 @@ import { FaUserLarge } from "react-icons/fa6";
 import { RiCouponFill } from "react-icons/ri";
 import { usePathname, useRouter } from "next/navigation";
 import { pathNameFilter } from "@/hooks/pathNameFilter";
+import { FaHandshake } from "react-icons/fa6";
 import Link from "next/link";
 
 export default function page() {
@@ -33,9 +34,9 @@ export default function page() {
     },
     {
       id: 4,
-      icon: <HiOutlineSpeakerphone className="text-xl text-white" />,
-      title: "Announcements",
-      link: "/application/announcements",
+      icon: <FaHandshake className="text-xl text-white" />,
+      title: "Services",
+      link: "/application/services",
     },
     {
       id: 5,

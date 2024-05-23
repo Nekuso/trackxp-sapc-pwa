@@ -239,6 +239,7 @@ export const useOrderServices: any = () => {
         ),
         vehicle_entries("*"),
         progress_entries("*"),
+        image_entries("*"),
         subtotal,
         total_price,
         amount_paid,
