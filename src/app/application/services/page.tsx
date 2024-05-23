@@ -39,7 +39,7 @@ export default function Application() {
             All Services
           </h1>
           <p className="text-white text-sm">
-            View all services available on our branches.
+            View all services available on all our branches.
           </p>
         </div>
         {servicesData.length === 0 ? (
