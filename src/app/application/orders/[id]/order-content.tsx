@@ -271,38 +271,39 @@ export default function OrdersContent({ currentOrderServiceData }: any) {
       })}
       {currentOrderServiceData.map((order: any) => {
         return (
-          <div className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2">
-            <h3
-              className="
-            w-full flex justify-between place-items-center text-sm font-semibold text-slate-200
-            "
-            >
+          <div
+            className="w-full h-fit bg-darkComponentBg rounded-2xl p-4 shadow-xl flex flex-col gap-2"
+            onMouseEnter={() => plugin.current.stop()}
+            onMouseLeave={() => plugin.current.reset()}
+            onMouseOver={() => plugin.current.stop()}
+            onMouseOut={() => plugin.current.reset()}
+            onFocus={() => plugin.current.stop()}
+          >
+            <h3 className="w-full flex justify-between place-items-center text-sm font-semibold text-slate-200">
               Images
             </h3>
-            <div className="w-full h-full flex flex-col justify-center">
+            <div className="w-full h-full flex flex-col justify-center rounded-xl">
               <Carousel
                 plugins={[plugin.current]}
-                className="w-full max-w-full rounded-2xl"
-                onMouseEnter={plugin.current.stop}
-                onMouseLeave={plugin.current.reset}
+                className="w-full max-w-full rounded-xl"
                 opts={{
                   loop: true,
                   dragFree: true,
                 }}
               >
-                <CarouselContent className="rounded-3xl ">
+                <CarouselContent className="rounded-3xl">
                   {order.image_entries.map((image: any, index: any) => (
-                    <CarouselItem key={index} className="basis-full">
-                      <div className="p-1">
+                    <CarouselItem key={index} className="basis-full rounded-xl">
+                      <div className="p-1 rounded-xl">
                         <AspectRatio
                           ratio={1}
-                          className="rounded-md relative w-full"
+                          className="rounded-xl relative w-full"
                         >
                           <Image
                             src={`${image.image_url}` ?? ""}
                             alt="Photo by Drew Beamer"
                             fill
-                            className="w-full rounded-md object-cover transition-all duration-300"
+                            className="w-full rounded-xl object-cover transition-all duration-300 pointer-events-none"
                           />
                         </AspectRatio>
                       </div>

@@ -138,7 +138,7 @@ export default function Order({ params }: { params: any }) {
           <Image
             src={Searching}
             alt="Receipt Logo"
-            className="w-full md:w-[25%] mx-auto"
+            className="w-full md:w-[25%] mx-auto pointer-events-none"
           />
         </div>
       ) : (

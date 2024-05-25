@@ -47,7 +47,7 @@ export default function Application() {
             <Image
               src={Searching}
               alt="Loading Logo"
-              className="w-full md:w-[25%] mx-auto"
+              className="w-full md:w-[25%] mx-auto pointer-events-none"
             />
           </div>
         ) : (
